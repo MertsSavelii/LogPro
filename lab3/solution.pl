@@ -1,72 +1,72 @@
 % поиск в глубину
-searchDptsh(A, B):-
-    write('searchDpth START'),nl,
+search_DFS(A, B):-
+    write('Старт'),nl,
     get_time(DFS),
-    dpth([A], B, L),
-    printRes(L),
+    dfs([A], B, L),
+    print_Res(L),
     get_time(DFS1),
-    write('searchDpth END'), nl, nl,
+    write('Конец'), nl, nl,
     T1 is DFS1 - DFS,
-    write('TIME IS '), write(T1), nl, nl.
+    write('Время '), write(T1), nl, nl.
 
-dpth([X|T], X, [X|T]).
-dpth(P,F,L):-
+dfs([X|T], X, [X|T]).
+dfs(P,F,L):-
     prolong(P, P1),
-    dpth(P1,F,L).
+    dfs(P1,F,L).
 
 % поиск в ширину
-searchBdth(X, Y):-
+search_BFS(X, Y):-
     write('Старт'), nl,
     get_time(BFS),
-    bdth([[X]], Y, L),
-    printRes(L),
+    bfs([[X]], Y, L),
+    print_Res(L),
     get_time(BFS1),
     write('Конец'), nl, nl,
     T1 is BFS1 - BFS,
-    write('Врем '), write(T1), nl, nl.
+    write('Время '), write(T1), nl, nl.
 
-bdth([[B|T]|_], B, [B|T]).
-bdth([H|QT], X, R):-
+bfs([[B|T]|_], B, [B|T]).
+bfs([H|QT], X, R):-
     findall(Z, prolong(H, Z), T),
     append(QT, T, OutQ), !,
-    bdth(OutQ, X, R).
-bdth([_|T], X, R):- bdth(T, X, R).
+    bfs(OutQ, X, R).
+bfs([_|T], X, R):- bfs(T, X, R).
 
 % поиск с итерационным углублением
-searchId(Start, Finish):-
-    write('searchId START'), nl,
+search_IDS(Start, Finish):-
+    write('Старт'), nl,
     get_time(ITER),
     int(DepthLimit),
-    depthId([Start], Finish, Res, DepthLimit),
-    printRes(Res),
+    ids([Start], Finish, Res, DepthLimit),
+    print_Res(Res),
     get_time(ITER1),
-    write('searchId END'), nl, nl,
+    write('Конец'), nl, nl,
     T1 is ITER1 - ITER,
-    write('TIME IS '), write(T1), nl, nl.
-searchId(Start,Finish,Path):-
+    write('Время '), write(T1), nl, nl.
+search_IDS(Start,Finish,Path):-
     int(Level),
-    searchId(Start,Finish,Path,Level).
+    search_IDS(Start,Finish,Path,Level).
 
-depthId([Finish|T], Finish, [Finish|T], 0).
-depthId(Path, Finish, R, N):-
+ids([Finish|T], Finish, [Finish|T], 0).
+ids(Path, Finish, R, N):-
     N > 0,
     prolong(Path, NewPath),
     N1 is N - 1,
-    depthId(NewPath, Finish, R, N1).
+    ids(NewPath, Finish, R, N1).
 
 int(1).
 int(X):-
     int(Y),
     X is Y + 1.
 
-printRes([]).
-printRes([A|T]):-
-    printRes(T),
+print_Res([]).
+print_Res([A|T]):-
+    print_Res(T),
     write(A), nl.
 
-prolong([In|InT], [Out, In|InT]):-
-    move(In, Out),
-    not(member(Out, [In|InT])).
+prolong([X|T], [Y, X|T]):-
+    move(X, Y),
+    not(member(Y, [X|T])).
 
 %переход из начального состояния, возможны 3 вариации
 move(s([Item1,Item2,Item3],'L',[]), s([Item1,Item2],'R',[Item3])):- not(check_exept([Item1,Item2])).
@@ -88,7 +88,7 @@ add(E, [H|T], [H|T1]):- add(E, T, T1).
 check_exept([Item1, Item2]):- excep(Item1, Item2).
 
 % исключения
-excep('Koza', 'Volk').
-excep('Koza', 'Kapusta').
-excep('Volk', 'Koza').
-excep('Kapusta', 'Koza').
+excep('Коза', 'Волк').
+excep('Коза', 'Капуста').
+excep('Волк', 'Коза').
+excep('Капуста', 'Коза').
