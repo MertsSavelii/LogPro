@@ -1,59 +1,5 @@
 :-['task2.pl'].
 
-parent("VankovAleksey", "VankovDenis").
-sex("VankovDenis", m).
-sex("VankovAleksey", m).
-parent("SechinaElena", "VankovDenis").
-sex("SechinaElena", f).
-parent("SechinGennadiy", "SechinaElena").
-parent("SechinGennadiy", "SechinaTatyana").
-sex("SechinGennadiy", m).
-parent("ShikinaAleksandra", "SechinaElena").
-parent("ShikinaAleksandra", "SechinaTatyana").
-sex("ShikinaAleksandra", f).
-parent("VankovViktor", "VankovAleksey").
-parent("VankovViktor", "VankovSergey").
-sex("VankovViktor", m).
-parent("TarasovaTamara", "VankovAleksey").
-parent("TarasovaTamara", "VankovSergey").
-sex("TarasovaTamara", f).
-parent("SechinaElena", "LaptevaAnastasiya").
-parent("LaptevDaniil", "LaptevaAnastasiya").
-sex("LaptevDaniil", m).
-sex("LaptevaAnastasiya", f).
-parent("MedvedevRoman", "MedvedevaSofya").
-parent("MedvedevRoman", "MedvedevStepan").
-sex("MedvedevRoman", m).
-sex("MedvedevaSofya", f).
-parent("SechinaTatyana", "MedvedevaSofya").
-parent("SechinaTatyana", "MedvedevStepan").
-sex("SechinaTatyana", f).
-sex("MedvedevStepan", m).
-parent("VankovSergey", "VankovNikita").
-sex("VankovEgor", m).
-sex("VankovNikita", m).
-sex("VankovSergey", m).
-parent("VankovaNatalya", "VankovNikita").
-sex("VankovaNatalya", f).
-parent("VankovSergey", "VankovEgor").
-sex("VankovSergey", m).
-parent("VankovaNatalya", "VankovEgor").
-sex("VankovaNatalya", f).
-parent("MedvedevValeriy", "MedvedevRoman").
-sex("MedvedevValeriy", m).
-parent("Tatyana", "MedvedevRoman").
-sex("Tatyana", f).
-parent("ShikinIlya", "ShikinaAleksandra").
-sex("ShikinIlya", m).
-parent("Mariya", "ShikinaAleksandra").
-sex("Mariya", f).
-parent("SechinNikolay", "SechinGennadiy").
-sex("SechinNikolay", m).
-parent("Aleksandra", "SechinGennadiy").
-sex("Aleksandra", f).
-parent("VankovViktor","VankovaMaria").
-parent("TarasovaTamara","VankovaMaria").
-sex("VankovaMaria", f).
 
 husb(Y, X):-parent(X, T), parent(Y, T), sex(Y, m).
 zolovka(Y, X):-husb(T, X), sister(Y, T).
