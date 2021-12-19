@@ -1,11 +1,10 @@
 :-['task2.pl'].
 
-
-
 relative(X, Y, Res):-
     search_bfs(X, Y, Res1), !,
     transform(Res1, Res).
 
+%поиск из 3 лабораторной работы
 search_bfs(X,Y,P):-
     bfs([[X]],Y,L),
     reverse(L,P).
@@ -20,63 +19,61 @@ bfs([_|T],Y,L):- bfs(T,Y,L).
 
 prolong([X|T],[Y,X|T]):-
     move(X,Y),
-    \+ member(Y,[X|T]).
+    not(member(Y,[X|T])).
 
-move(X,Y):-
-    check_link(_,X,Y).
+move(X,Y):- relationship(_,X,Y).
 
-transform([_],[]):-!. % переделевает цепочку родственников в цепочку родства
-transform([First,Second|Tail],ResList):-
-    check_link(Relation,First,Second),
-    ResList = [Relation|Tmp],
+% переделевает цепочку родственников в цепочку родства
+transform([_],[]):-!. 
+transform([First,Second|Tail],Res):-
+    relationship(Relation,First,Second),
+    Res = [Relation|Tmp],
     transform([Second|Tail],Tmp),!.
 
-sibling(Person, Sibling):-
+% вспомогательный предикат поиска родного брата/сестры
+geschwister(Person, Geschwister):-
     child(Person, P),
-    child(Sibling, P),
-    Person \= Sibling.
+    child(Geschwister, P),
+    not(Person = Geschwister).
 
-check_link(husband, Husband, Wife):-
-    child(Child, Husband),
+relationship(husb, Husb, Wife):-
+    child(Child, Husb),
     child(Child, Wife),
-    Husband \= Wife,
-    male(Husband).
+    not(Husb = Wife),
+    male(Husb).
 
-check_link(wife, Wife, Husband):-
-    child(Child, Husband),
+relationship(wife, Wife, Husb):-
+    child(Child, Husb),
     child(Child, Wife),
-    Husband \= Wife,
+    not(Husb = Wife),
     female(Wife).
 
-check_link(brother, Brother, Y):-
-    sibling(Brother, Y),
+relationship(brother, Brother, I):-
+    geschwister(Brother, I),
     male(Brother).
 
-check_link(sister, Sister, Y):-
-    sibling(Sister, Y),
+relationship(sister, Sister, I):-
+    geschwister(Sister, I),
     female(Sister).
 
-check_link(father, Father, Child):-
+relationship(father, Father, Child):-
     child(Child, Father),
     male(Father).
 
-check_link(mother, Mother, Child):-
+relationship(mother, Mother, Child):-
     child(Child, Mother),
     male(Mother).
 
-check_link(parent, Parent, Child):-
+relationship(parent, Parent, Child):-
     child(Child, Parent).
 
-check_link(son, Child, Parent):-
+relationship(son, Child, Parent):-
     child(Child, Parent),
     male(Child).
 
-check_link(daughter, Child, Parent):-
+relationship(daughter, Child, Parent):-
     child(Child, Parent),
     female(Child).
 
-check_link(child, Child, Parent):-
-    child(Child, Parent).
-
-check_relation(X):-
-    member(X, [father, mother, sister, brother, son, daughter, husband, wife]).    
+relationship(child, Child, Parent):- child(Child, Parent).
+    
